@@ -41,7 +41,7 @@ export function SignIn() {
 
   return (
     <div className="border w-[400px] border-white p-[20px] text-white font-sans text-[20px]">
-      <h2 className="text-center border-b pb-[20px] border-blue-900">Signup</h2>
+      <h2 className="text-center border-b pb-[20px] border-blue-900">SignIn</h2>
       {error && <div className="text-center text-red-600 text-[17px]">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="mt-[20px]">
@@ -77,7 +77,7 @@ export function SignIn() {
             className="bg-gray-900 text-blue-900 p-[10px] rounded-[10px] w-[150px]"
             type="submit"
           >
-            SignUp
+            SignIn
           </button>
         </div>
       </form>
