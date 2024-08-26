@@ -3,15 +3,15 @@
 import axios from "axios";
 import { useState } from "react";
 
-async function Signup(name,username,password){
-  const response = await axios.post("http://localhost:3000/api/signup", {
-    name,
+async function Signup(username,password){
+  const response = await axios.post("http://localhost:3000/api/signin", {
     username,
     password
   });
   if(response.data.success == "true"){
     document.cookie = `authToken=${response.data.token}; path=/`;
     console.log(response.data.token)
+
     window.location.pathname = "/"
   }
   else{
@@ -20,15 +20,10 @@ async function Signup(name,username,password){
   }
 }
 
-export function SignUp() {
-  const [name, setName] = useState('');
+export function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error,seterror] = useState('')
-
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
+  const [error, seterror] = useState("")
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -40,7 +35,7 @@ export function SignUp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const res = Signup(name,email,password)
+    const res = Signup(email,password)
     if(res) seterror(res)
   };
 
@@ -49,16 +44,6 @@ export function SignUp() {
       <h2 className="text-center border-b pb-[20px] border-blue-900">Signup</h2>
       {error && <div className="text-center text-red-600 text-[17px]">{error}</div>}
       <form onSubmit={handleSubmit}>
-        <div className="mt-[20px]">
-          <label>Name :</label>
-          <input
-            type="text"
-            name="name"
-            value={name}
-            onChange={handleNameChange}
-            className="bg-black ml-[20px] border h-[25px] border-blue-900 w-[70%] border-box pl-[20px]"
-          />
-        </div>
         <div className="mt-[20px]">
           <label>Email :</label>
           <input
@@ -83,10 +68,10 @@ export function SignUp() {
           <p
             className="text-[17px] underline text-blue-900 cursor-pointer"
             onClick={() => {
-              window.location.pathname = '/signin';
+              window.location.pathname = '/signup';
             }}
           >
-            Already have an account
+            Create an account?
           </p>
           <button
             className="bg-gray-900 text-blue-900 p-[10px] rounded-[10px] w-[150px]"

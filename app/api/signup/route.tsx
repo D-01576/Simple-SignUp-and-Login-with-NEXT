@@ -17,12 +17,27 @@ const createUserSchema = z.object({
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    console.log("kasd")
     const result = createUserSchema.safeParse(body);
 
     if(!result.success){
-        return NextResponse.json({success: "false"})
+        return NextResponse.json({
+          success: "false",
+          message: "input incorrect"
+        })
     }
 
+    const exist = await prisma.user.findUnique({
+      where: {
+        username:body.username
+      },
+    });    
+    if(exist){
+      return NextResponse.json({
+        success: "false",
+        message : "user already exist"
+      })
+    }
     const user = await prisma.user.create({
       data: {
         name: result.data.name,
@@ -31,11 +46,16 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const token = jwt.sign({ userId: user.id }, secret, {
+    console.log(user)
+
+    const token = jwt.sign({ username:body.username }, secret, {
       expiresIn: "1h",
     });
-
-    return NextResponse.json({ token });
+    console.log(token)
+    return NextResponse.json({
+      success: "true",
+      token: token
+    });
   } catch (error) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }

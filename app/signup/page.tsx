@@ -1,6 +1,7 @@
+
 "use client"
+import {SignUp} from "@/components/SignUp"
 import { useEffect, useState } from 'react';
-import { UserCard } from "@/components/usercard";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from 'next/navigation';
@@ -31,7 +32,7 @@ const checkAuth = async (token: string | undefined): Promise<AuthData | null> =>
   }
 };
 
-export default function Home() {
+export default function H() {
   const [authData, setAuthData] = useState<AuthData | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -41,8 +42,8 @@ export default function Home() {
 
     const fetchAuthData = async () => {
       const data = await checkAuth(token);
-      if (!data) {
-        router.push('/signin');
+      if (data) {
+        router.push('/');
       } else {
         setAuthData(data);
       }
@@ -60,13 +61,16 @@ export default function Home() {
     )
   }
 
-  if (!authData) {
-    return <div>Redirecting to <a href="/signin">signin</a>...</div>;
-  }
-
-  return (
-    <div className="w-[100vw] h-[100vh] flex justify-center items-center">
-      <UserCard name={authData.user.name} email={authData.user.username} />
+  if (authData) {
+    return(
+      <div className="w-[100vw] h-[100vh] flex justify-center items-center">
+      <div>Redirecting to <a href="/" className="text-white">signin</a>...</div>
     </div>
-  );
+    );
+  }
+return(
+        <div className="text-white flex justify-center items-center h-[100vh] w-[100vw]">
+            <SignUp></SignUp>
+        </div>
+    )
 }
