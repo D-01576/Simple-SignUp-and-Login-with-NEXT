@@ -4,7 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 
 async function Signup(name,username,password){
-  const response = await axios.post("http://localhost:3000/api/signup", {
+  const response = await axios.post("api/signup", {
     name,
     username,
     password
